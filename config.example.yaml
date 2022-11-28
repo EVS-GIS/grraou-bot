@@ -1,0 +1,22 @@
+app:
+  # Set this variable to DEBUG or INFO
+  environment: DEBUG
+
+librebooking:
+  # Set the URL of LibreBooking instance (ending with /Web/)
+  url: 
+
+  # Set the credentials allowed to access to LibreBooking API
+  username: 
+  password: 
+
+mediawiki:
+  # Set the URL of MediaWiki API (ending with api.php)
+  url: 
+
+  # Set the MediaWiki page to update
+  pagename: 
+
+  # Set the GrraouBot credentials
+  username: 
+  password: 

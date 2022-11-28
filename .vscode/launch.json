@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "grraou-bot",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/grraoubot.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+        }
+    ]
+}
