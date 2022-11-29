@@ -101,7 +101,7 @@ def generate_table(resources, resource_types):
 |{res['name']}
 |{res['description']}'''
     
-    mw_table += '\n}'
+    mw_table += '\n|}'
     logger.debug(mw_table)
     
     return mw_table

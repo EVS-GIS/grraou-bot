@@ -1,3 +1,4 @@
+import os
 import logging
 import yaml
 
@@ -17,6 +18,9 @@ with open('config.yaml') as f:
     conf = yaml.safe_load(f)
     
 # Set logfiles output
+if not os.path.isdir('logs'):
+    os.mkdir('logs')
+    
 logfile = TimedRotatingFileHandler('logs/grraou-bot.log', 
                                    when='H', 
                                    interval=conf['app']['logrotate'], 
