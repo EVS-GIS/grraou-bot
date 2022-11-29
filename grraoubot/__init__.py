@@ -7,17 +7,23 @@ from logging.handlers import TimedRotatingFileHandler
 logger = logging.getLogger("grraou-bot")
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+# Set console output
 console = logging.StreamHandler()
 console.setFormatter(formatter)
 logger.addHandler(console)
 
-logfile = TimedRotatingFileHandler('logs/grraou-bot.log', when='M', interval=5, encoding='UTF-8')
-logfile.setFormatter(formatter)
-logger.addHandler(logfile)
-
 # Read configuration file
 with open('config.yaml') as f:
     conf = yaml.safe_load(f)
+    
+# Set logfiles output
+logfile = TimedRotatingFileHandler('logs/grraou-bot.log', 
+                                   when='H', 
+                                   interval=conf['app']['logrotate'], 
+                                   encoding='UTF-8')
+logfile.setFormatter(formatter)
+logger.addHandler(logfile)
 
+# Set log level
 logger.setLevel(conf['app']['environment'])
-logger.info("Configuration file loaded")
+logger.info("Configuration loaded")

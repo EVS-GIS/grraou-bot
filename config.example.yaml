@@ -2,6 +2,9 @@ app:
   # Set this variable to DEBUG or INFO
   environment: DEBUG
 
+  # Set logrotate interval (in hours)
+  logrotate: 24
+
 librebooking:
   # Set the URL of LibreBooking instance (ending with /Web/)
   url: 

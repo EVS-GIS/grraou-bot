@@ -24,6 +24,8 @@ def lb_authentication():
     
 def lb_logout(lb_credentials):
     # LibreBooking Logout
+    logger.debug("Logout from LibreBooking API")
+    
     logout_url = urljoin(conf['librebooking']['url'], 'Services/index.php/Authentication/SignOut')
     logger.debug(f"Requesting logout URL: {logout_url}")
     rep = requests.post(logout_url,
@@ -36,7 +38,7 @@ def lb_logout(lb_credentials):
     
 def gather_resources(lb_credentials):
     # Gather resources
-    logger.debug("Gathering all resources")
+    logger.info("Gathering all resources")
 
     resources_url = urljoin(conf['librebooking']['url'], 'Services/index.php/Resources/')
     logger.debug(f"Requesting URL: {resources_url}")
@@ -52,9 +54,9 @@ def gather_resources(lb_credentials):
 
 
 def gather_types(lb_credentials):
-    logger.debug("Gathering all resource types")
+    logger.info("Gathering all resource types")
 
-    resources_url = urljoin(conf['librebooking']['url'], 'Services/index.php/Resources/Groups')
+    resources_url = urljoin(conf['librebooking']['url'], 'Services/index.php/Resources/Types')
     logger.debug(f"Requesting URL: {resources_url}")
     rep = requests.get(resources_url,
                     headers={
@@ -67,11 +69,21 @@ def gather_types(lb_credentials):
 
 
 def gather_all():
+    '''
+    Gather resources and resource types from LibreBooking API.
+    
+        Parameters:
+            None
+
+        Returns:
+            resources (dict): JSON formatted return of Resources LibreBooking API.
+            resource_types (dict): JSON formatted return of Resource Types LibreBooking API.
+    '''
+    
     lb_credentials = lb_authentication()
     
     resources = gather_resources(lb_credentials)
-    # resource_types = gather_types(lb_credentials)
-    resource_types = None
+    resource_types = gather_types(lb_credentials)
     
     lb_logout(lb_credentials)
     

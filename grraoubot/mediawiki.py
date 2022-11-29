@@ -63,7 +63,7 @@ def mw_logout(session):
     
 
 def get_mw_page():
-    logger.debug('Get the content of the MediaWiki Page')
+    logger.info('Get the content of the MediaWiki Page')
 
     rep = requests.get(conf['mediawiki']['url'], 
                        params={
@@ -83,28 +83,32 @@ def get_mw_page():
     return mw_data
 
 
-def generate_table(resources):
-    logger.debug("Generate MediaWiki table")
+def generate_table(resources, resource_types):
+    logger.info("Generate MediaWiki table")
     
     mw_table = '''{| class="wikitable sortable"
 |+
+!Type de ressource
 !Nom
-!Type de ressource'''
+!Description'''
     
     for res in resources['resources']:
+        type_data = next(item for item in resource_types['types'] if item["id"] == res['typeId'])
+        
         mw_table += f'''
 |-
+|{type_data['description']}
 |{res['name']}
-|{res['typeId']}'''
+|{res['description']}'''
     
-    mw_table += '}'
+    mw_table += '\n}'
     logger.debug(mw_table)
     
     return mw_table
 
 
 def write_mw_page(session, mw_updated_page):
-    logger.debug('Write MediaWiki page')
+    logger.info('Write MediaWiki page')
     
     # Get a csrf token
     rep = session.get(conf['mediawiki']['url'], 
@@ -131,17 +135,22 @@ def write_mw_page(session, mw_updated_page):
                        })
     
     logger.debug(rep.json())
+
+
+def update_page(resources, resource_types):
+    '''
+    Update the MediaWiki page with the LibreBooking API returns.
     
-    if rep.status_code == 200:
-        return True
-    else:
-        return False
-
-
-def update_page(resources):
+        Parameters:
+            resources (dict): JSON formatted return of Resources LibreBooking API.
+            resource_types (dict): JSON formatted return of Resource Types LibreBooking API.
+            
+        Returns:
+            None
+    '''
     
     mw_data = get_mw_page()
-    mw_table = generate_table(resources)
+    mw_table = generate_table(resources, resource_types)
     
     mw_updated_page = mw_data + mw_table
     
@@ -149,4 +158,3 @@ def update_page(resources):
     write_mw_page(session, mw_updated_page)
     mw_logout(session)
     
-    return
