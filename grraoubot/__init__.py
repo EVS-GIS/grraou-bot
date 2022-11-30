@@ -14,14 +14,17 @@ console.setFormatter(formatter)
 logger.addHandler(console)
 
 # Read configuration file
-with open('config.yaml') as f:
+grraou_wd = os.path.dirname(os.path.dirname(__file__))
+
+with open(os.path.join(grraou_wd, 'config.yaml')) as f:
     conf = yaml.safe_load(f)
     
 # Set logfiles output
-if not os.path.isdir('logs'):
-    os.mkdir('logs')
+logs_dir = os.path.join(grraou_wd, 'logs')
+if not os.path.isdir(logs_dir):
+    os.mkdir(logs_dir)
     
-logfile = TimedRotatingFileHandler('logs/grraou-bot.log', 
+logfile = TimedRotatingFileHandler(os.path.join(logs_dir, 'grraou-bot.log'), 
                                    when='H', 
                                    interval=conf['app']['logrotate'], 
                                    encoding='UTF-8')
